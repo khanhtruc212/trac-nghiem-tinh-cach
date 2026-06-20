@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KT Academy · Khám phá tính cách của con (4 Con Vật)</title>
+<style>
+  :root{
+    --paper:#fff;--ink:#23303a;--ink-soft:#52606d;--muted:#7b8794;--line:#e7ebee;
+    --teal:#0f766e;--teal-deep:#134e4a;--rose:#be123c;--teal-soft:#e6f4f1;
+    --d:#ea580c;--i:#f59e0b;--s:#10b981;--c:#6366f1;
+    --radius:16px;--shadow:0 1px 2px rgba(16,24,40,.06),0 14px 36px -16px rgba(16,24,40,.22);
+    --font:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font);color:var(--ink);line-height:1.62;font-size:16px;
+    background:linear-gradient(180deg,#fef6ef,#eef6f4 40%,#eef1f7);-webkit-font-smoothing:antialiased;}
+  .container{max-width:880px;margin:0 auto;padding:0 20px 80px;}
+
+  .hero{color:#fff;padding:40px 0 36px;position:relative;overflow:hidden;
+    background:radial-gradient(800px 360px at 90% -20%,#f59e0b55,transparent 60%),
+               radial-gradient(700px 340px at 8% -10%,#10b98155,transparent 60%),
+               linear-gradient(135deg,#0d3b36,#0f766e 55%,#155e54);}
+  .hero .inner{max-width:880px;margin:0 auto;padding:0 20px;position:relative;z-index:2;}
+  .brand{display:flex;align-items:center;gap:13px;margin-bottom:18px;}
+  .kt-logo{flex:0 0 auto;filter:drop-shadow(0 8px 16px rgba(45,212,191,.4));}
+  .brand .bt b{display:block;color:#fff;font-size:18px;line-height:1.15;letter-spacing:.5px;font-weight:800;}
+  .brand .bt span{font-size:12px;color:#bfeee6;}
+  .hero h1{font-size:32px;margin:6px 0 8px;font-weight:800;letter-spacing:-.4px;}
+  .hero .em{font-size:34px;letter-spacing:4px;}
+  .hero p{font-size:16px;color:#e7f4f0;max-width:600px;margin:8px 0 0;}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 28px;margin-top:24px;}
+  .lead{font-size:15.5px;color:var(--ink-soft);}
+
+  /* mode chooser */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 6px;}
+  .mode{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border:2px solid var(--line);
+    border-radius:14px;padding:18px 20px;cursor:pointer;background:#fcfdfd;font-family:var(--font);transition:.14s;}
+  .mode:hover{border-color:#9cd3ca;background:#f6fbfa;transform:translateY(-1px);}
+  .mode .mt{font-size:18px;font-weight:800;}
+  .mode .ms{font-size:13px;color:var(--muted);}
+  .mode .done{font-size:12.5px;font-weight:700;color:var(--s);margin-top:4px;}
+  .mode.child{border-color:#fce6b8;} .mode.parent{border-color:#bdead9;}
+
+  .btn{display:inline-flex;gap:8px;align-items:center;cursor:pointer;border:0;font-family:var(--font);
+    font-size:15px;font-weight:700;padding:12px 22px;border-radius:11px;transition:.15s;text-decoration:none;}
+  .btn-primary{background:linear-gradient(135deg,#0f766e,#134e4a);color:#fff;box-shadow:0 8px 20px -10px rgba(15,118,110,.7);}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-ghost{background:#f1f5f4;color:var(--teal-deep);border:1px solid var(--line);}
+  .btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;}
+  .btn[disabled]{opacity:.45;cursor:default;}
+  .btn-block{width:100%;justify-content:center;}
+
+  .compare-cta{margin-top:16px;padding:16px;border:1.5px dashed #bfe3dc;border-radius:13px;background:var(--teal-soft);text-align:center;}
+  .compare-cta p{margin:0 0 10px;font-size:14px;color:var(--teal-deep);}
+
+  .animals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 4px;}
+  .ani{border:2px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center;background:#fcfdfd;}
+  .ani .big{font-size:36px;line-height:1;}
+  .ani b{display:block;margin-top:6px;font-size:14px;}
+  .ani small{color:var(--muted);font-size:11.5px;}
+  .ani.d{border-color:#fbd6bd;background:#fff6f0;} .ani.i{border-color:#fce6b8;background:#fffaf0;}
+  .ani.s{border-color:#bdead9;background:#f0fbf6;} .ani.c{border-color:#cdd0fb;background:#f3f4ff;}
+  .note{background:#fff7e8;border:1px solid #f4e0b0;border-radius:12px;padding:13px 17px;margin-top:16px;font-size:13.5px;color:#7a5410;}
+
+  .qhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:6px;}
+  .qhead h2{margin:0;font-size:20px;}
+  .qhead .who{font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;}
+  .who-child{background:#fff8e8;color:#b45309;} .who-parent{background:#eafaf3;color:#0f766e;}
+  .prog-wrap{height:10px;background:#eef2f1;border-radius:99px;overflow:hidden;margin:16px 0 4px;}
+  .prog-bar{height:100%;width:0;background:linear-gradient(90deg,#f59e0b,#10b981,#0f766e);transition:width .25s;}
+  .prog-txt{font-size:13px;color:var(--muted);text-align:right;margin-bottom:14px;}
+  .q{padding:14px 0 6px;border-bottom:1px dashed #e7edeb;}
+  .q:last-of-type{border-bottom:0;}
+  .q .qt{font-weight:700;font-size:16px;margin-bottom:11px;display:flex;gap:10px;}
+  .q .qt .n{flex:0 0 auto;width:27px;height:27px;border-radius:8px;background:#eef2f1;color:var(--ink-soft);display:grid;place-items:center;font-size:13px;font-weight:700;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt{display:flex;gap:11px;align-items:center;padding:12px 14px;border:2px solid var(--line);border-radius:12px;cursor:pointer;background:#fff;transition:.12s;font-size:14.5px;}
+  .opt:hover{border-color:#9cd3ca;background:#f6fbfa;}
+  .opt .e{font-size:24px;flex:0 0 auto;}
+  .opt.sel.d{border-color:var(--d);background:#fff1e8;} .opt.sel.i{border-color:var(--i);background:#fff8e8;}
+  .opt.sel.s{border-color:var(--s);background:#eafaf3;} .opt.sel.c{border-color:var(--c);background:#eef0ff;}
+
+  .runner-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  .warn{color:var(--rose);font-size:13.5px;font-weight:600;display:none;}
+
+  .rhead{text-align:center;padding:8px 0 4px;}
+  .rhead .face{font-size:72px;line-height:1;}
+  .rhead .nm{font-size:26px;font-weight:800;margin:4px 0 2px;}
+  .rhead .tg{font-size:14.5px;color:var(--ink-soft);}
+  .bar-row{display:grid;grid-template-columns:140px 1fr 46px;gap:10px;align-items:center;margin:9px 0;}
+  .bar-row .lbl{font-size:14px;font-weight:600;}
+  .bar-track{height:14px;background:#eef2f1;border-radius:99px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:99px;transition:width .6s;}
+  .bar-row .pct{font-size:13.5px;font-weight:700;text-align:right;color:var(--ink-soft);}
+  .rb{border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:14px 0;background:#fcfdfd;}
+  .rb h4{margin:0 0 8px;font-size:15.5px;}
+  .rb ul{margin:6px 0;padding-left:20px;}.rb li{margin:5px 0;font-size:14.5px;}
+  .rb p{margin:5px 0;font-size:14.5px;}
+  .say{background:#fffaf0;border-left:3px solid #f0c552;border-radius:0 9px 9px 0;padding:8px 13px;margin:7px 0;font-style:italic;color:#7a5a12;font-size:14px;}
+  .blend{background:var(--teal-soft);border:1px solid #bfe3dc;border-radius:12px;padding:13px 17px;margin:14px 0;font-size:14px;color:var(--teal-deep);}
+
+  /* compare */
+  .cmp-top{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 10px;}
+  .cmp-card{border:2px solid var(--line);border-radius:14px;padding:16px;text-align:center;}
+  .cmp-card.kid{border-color:#fce6b8;background:#fffdf6;} .cmp-card.par{border-color:#bdead9;background:#f6fdfa;}
+  .cmp-card .who{font-size:12.5px;font-weight:700;color:var(--muted);}
+  .cmp-card .face{font-size:50px;line-height:1.1;}
+  .cmp-card .nm{font-size:18px;font-weight:800;}
+  .verdict{border-radius:13px;padding:16px 18px;margin:14px 0;font-size:15px;border:1px solid;}
+  .v-ok{background:#eafaf3;border-color:#bdead9;color:#0f5132;}
+  .v-mid{background:#fff7e8;border-color:#f4e0b0;color:#7a5410;}
+  .v-diff{background:#eef0ff;border-color:#cdd0fb;color:#3730a3;}
+  .cmp-row{margin:12px 0;}
+  .cmp-row .cl{font-size:14px;font-weight:600;margin-bottom:5px;}
+  .cmp-bars{display:grid;gap:5px;}
+  .cb{display:grid;grid-template-columns:46px 1fr 40px;gap:8px;align-items:center;font-size:12px;color:var(--muted);}
+  .cb .track{height:11px;background:#eef2f1;border-radius:99px;overflow:hidden;}
+  .cb .fill{height:100%;border-radius:99px;}
+  .cb b{color:var(--ink-soft);text-align:right;}
+
+  .collect{border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0;background:#fcfdfd;}
+  .collect h3{margin:0 0 10px;font-size:16px;color:var(--teal-deep);}
+  .fields{display:flex;gap:12px;flex-wrap:wrap;}
+  .fld{flex:1;min-width:180px;}
+  .fld label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;}
+  .fld input{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;font-size:14.5px;font-family:var(--font);}
+  .fld input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  .fld.err input{border-color:var(--rose);background:#fff6f6;}
+  .collect .hint{font-size:12.5px;color:var(--muted);margin-top:9px;}
+  .pinfo{text-align:center;font-size:13px;color:var(--ink-soft);background:#f3f6f6;border-radius:10px;padding:8px 12px;margin:0 0 14px;}
+  .gate{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:radial-gradient(800px 360px at 90% -20%,#f59e0b55,transparent 60%),radial-gradient(700px 340px at 8% -10%,#10b98155,transparent 60%),linear-gradient(135deg,#0d3b36,#0f766e 55%,#155e54);}
+  .gate.hidden{display:none;}
+  .gate-box{background:#fff;border-radius:18px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);padding:32px 28px;max-width:400px;width:100%;text-align:center;}
+  .gate-box h2{margin:12px 0 4px;font-size:21px;color:var(--teal-deep);}
+  .gate-box p{margin:0 0 16px;font-size:14px;color:var(--ink-soft);}
+  .gate-box input{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-family:var(--font);text-align:center;letter-spacing:.06em;}
+  .gate-box input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  .gate-box .btn{width:100%;justify-content:center;margin-top:12px;}
+  .gate-err{color:var(--rose);font-size:13.5px;font-weight:600;margin-top:10px;min-height:18px;}
+  .sent-note{border-radius:10px;padding:11px 15px;font-size:13.5px;margin:14px 0;background:var(--teal-soft);border:1px solid #bfe3dc;color:var(--teal-deep);}
+  footer{color:var(--muted);font-size:12.5px;margin-top:34px;text-align:center;}
+  footer b{color:var(--teal-deep);}
+  @media(max-width:680px){
+    .animals{grid-template-columns:repeat(2,1fr);}.opts{grid-template-columns:1fr;}
+    .modes{grid-template-columns:1fr;}.cmp-top{grid-template-columns:1fr;}
+    .hero h1{font-size:25px;}.bar-row{grid-template-columns:108px 1fr 42px;}
+  }
+</style>
+</head>
+<body>
+<div id="gate" class="gate">
+  <div class="gate-box">
+    <svg viewBox="0 0 64 64" width="58" height="58" role="img" aria-label="KT Academy"><defs><linearGradient id="ktg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#ktg3)"/><path d="M45 9l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1z" fill="#fcd34d"/><text x="30" y="45" font-family="Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="1">KT</text></svg>
+    <h2>KT Academy</h2>
+    <p>Bài test dành riêng cho ba mẹ &amp; bé được mời. Vui lòng nhập <b>mã truy cập</b> mà KT Academy đã gửi cho bạn.</p>
+    <input id="gateCode" type="text" placeholder="Nhập mã truy cập…" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccess()">
+    <button class="btn btn-primary" onclick="checkAccess()">Vào làm bài →</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="hero"><div class="inner">
+  <div class="brand">
+    <svg class="kt-logo" viewBox="0 0 64 64" width="50" height="50" role="img" aria-label="KT Academy"><defs><linearGradient id="ktg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#ktg)"/><rect x="3" y="3" width="58" height="58" rx="16" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.5"/><path d="M45 9l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1z" fill="#fcd34d"/><text x="30" y="45" font-family="Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="1">KT</text></svg>
+    <div class="bt"><b>KT Academy</b><span>Kiến thức giúp bạn nhìn xa · Tư duy giúp bạn đi đúng</span></div>
+  </div>
+  <div class="em">🦁 🐵 🐨 🦉</div>
+  <h1>Khám phá tính cách của con</h1>
+  <p>Bé làm một phần, ba mẹ làm một phần — rồi <b>so sánh</b> để xem ba mẹ có thật sự hiểu đúng về con không.</p>
+</div></div>
+
+<div class="container">
+  <div id="home" class="card">
+    <p class="lead">Bài test gồm <b>2 phần</b>. Hãy cho <b>bé tự làm</b> phần của bé, và <b>ba mẹ làm</b> phần của mình một cách độc lập (đừng nhìn bài nhau nhé!). Sau khi cả hai cùng xong, bấm <b>So sánh kết quả</b> để khám phá điều thú vị.</p>
+
+    <div class="collect">
+      <h3>📝 Thông tin</h3>
+      <div class="fields">
+        <div class="fld" id="fldChild"><label>👶 Tên con *</label><input id="childName" placeholder="Tên của bé" autocomplete="off"></div>
+        <div class="fld" id="fldParent"><label>👨‍👩‍👧 Tên ba mẹ *</label><input id="parentName" placeholder="Tên ba/mẹ" autocomplete="name"></div>
+        <div class="fld" id="fldPhone"><label>📞 Số điện thoại *</label><input id="phone" placeholder="09xx xxx xxx" inputmode="tel" autocomplete="tel"></div>
+      </div>
+      <div class="hint" id="collectHint">🔒 Tên con dùng cho cả 2 phần. Tên ba mẹ &amp; SĐT cần khi <b>ba mẹ làm bài</b> (để KT Academy liên hệ tư vấn).</div>
+    </div>
+
+    <div class="modes">
+      <button class="mode child" onclick="start('child')">
+        <span class="mt">👶 Bé làm bài</span>
+        <span class="ms">Bé tự chọn theo cảm nhận của chính mình (ba mẹ có thể đọc giúp bé nhỏ).</span>
+        <span class="done" id="doneChild"></span>
+      </button>
+      <button class="mode parent" onclick="start('parent')">
+        <span class="mt">👨‍👩‍👧 Ba mẹ làm bài</span>
+        <span class="ms">Ba mẹ đánh giá về con qua quan sát hằng ngày.</span>
+        <span class="done" id="doneParent"></span>
+      </button>
+    </div>
+
+    <div class="compare-cta" id="compareCta" style="display:none">
+      <p id="compareMsg"></p>
+      <button class="btn btn-gold" id="compareBtn" onclick="showCompare()" disabled>📊 So sánh kết quả</button>
+    </div>
+
+    <div class="animals">
+      <div class="ani d"><div class="big">🦁</div><b>Sư Tử</b><small>Mạnh mẽ · dẫn đầu</small></div>
+      <div class="ani i"><div class="big">🐵</div><b>Khỉ Con</b><small>Vui nhộn · hoạt bát</small></div>
+      <div class="ani s"><div class="big">🐨</div><b>Gấu Koala</b><small>Hiền hòa · tình cảm</small></div>
+      <div class="ani c"><div class="big">🦉</div><b>Cú Mèo</b><small>Cẩn thận · ham học</small></div>
+    </div>
+    <div class="note">💛 Mục đích là <b>thấu hiểu &amp; đồng hành</b> cùng con, không phải dán nhãn hay giới hạn con. Trẻ thường là sự pha trộn của 2 con vật, và sẽ thay đổi khi lớn lên.</div>
+  </div>
+
+  <div id="runner"></div>
+
+  <footer><b>KT Academy</b> — Kiến thức giúp bạn nhìn xa · Tư duy giúp bạn đi đúng<br>Trắc nghiệm tính cách trẻ em (mô hình DISC – 4 Con Vật). Kết quả mang tính tham khảo, đồng hành cùng ba mẹ.</footer>
+</div>
+
+<script>
+/* ===== Thu thập kết quả về KT Academy + Khoá truy cập ===== */
+const SCRIPT_URL = "https://webhook.site/bac5aa77-d4eb-4295-a317-b024e308cb2b";
+let _cmpSent=false;
+function sendKid(test, result, detail){
+  if(!SCRIPT_URL) return;
+  const payload={ time:new Date().toLocaleString('vi-VN'),
+    name:PARTICIPANT.parentName||PARTICIPANT.childName||'', contact:PARTICIPANT.phone||'', test, result, detail };
+  try{ fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}); }catch(e){}
+}
+const ACCESS_HASH = 1505047887; // mã hiện tại: KTA2026
+function ktHash(s){ let x=5381; for(let i=0;i<s.length;i++) x=(x*33+s.charCodeAt(i))>>>0; return x; }
+function checkAccess(){
+  const v=(document.getElementById('gateCode').value||'').trim().toUpperCase();
+  if(ktHash(v)===ACCESS_HASH){ try{sessionStorage.setItem('kt_ok','1');}catch(e){} document.getElementById('gate').classList.add('hidden'); }
+  else { document.getElementById('gateErr').textContent='Mã không đúng. Vui lòng liên hệ KT Academy để nhận mã.'; }
+}
+
+const ANIMALS={
+  D:{emo:"🦁",name:"Sư Tử",tag:"Nhà lãnh đạo nhí — mạnh mẽ & quyết đoán",color:"#ea580c",
+    traits:"Con có ý chí mạnh, thích dẫn đầu, độc lập, nhiều năng lượng và rất thích chiến thắng. Con biết mình muốn gì và sẵn sàng hành động.",
+    strength:["Tự tin, dám làm, có chính kiến","Khả năng lãnh đạo, tổ chức bạn bè","Quyết đoán, chịu trách nhiệm","Nghị lực, không dễ bỏ cuộc"],
+    watch:["Dễ nóng giận, bướng bỉnh","Khó chấp nhận thua cuộc","Có thể áp đặt, lấn lướt bạn","Ghét bị ra lệnh, kiểm soát"],
+    tips:["Cho con <b>quyền lựa chọn</b> (đưa 2 phương án) thay vì ra lệnh — con sẽ bớt chống đối.","Trao cho con <b>vai trò &amp; trách nhiệm</b> (đội trưởng, người giúp việc nhà) để con thấy được tôn trọng.","Dạy con <b>thua đẹp &amp; lắng nghe</b> người khác thông qua trò chơi, luật rõ ràng.","Kỷ luật bằng <b>lý lẽ bình tĩnh &amp; nhất quán</b>, tránh quát mắng đối đầu (sẽ càng căng).","Khen <b>nỗ lực và cách cư xử tử tế</b>, đừng chỉ khen ‘con thắng’."],
+    say:["“Con muốn chọn cách A hay cách B?”","“Hôm nay con làm đội trưởng nhé.”","“Mẹ tự hào vì con đã rất cố gắng.”"],
+    act:"Thể thao, trò chơi vận động – thi đấu, dẫn dắt nhóm, dự án có mục tiêu rõ ràng."},
+  I:{emo:"🐵",name:"Khỉ Con",tag:"Ngôi sao vui nhộn — hoạt bát & sáng tạo",color:"#f59e0b",
+    traits:"Con vui vẻ, nói nhiều, thích bạn bè, giàu trí tưởng tượng và rất thích được chú ý. Cảm xúc của con đến nhanh và đi cũng nhanh.",
+    strength:["Giao tiếp tốt, dễ kết bạn","Lạc quan, lan toả năng lượng vui","Sáng tạo, nhiều ý tưởng","Biểu cảm phong phú, hồn nhiên"],
+    watch:["Dễ mất tập trung, hay quên","Chóng chán, dễ bỏ dở","Rất cần được công nhận","Nói nhiều hơn làm"],
+    tips:["Biến việc học &amp; việc nhà thành <b>trò chơi, bài hát, màu sắc</b> — con tiếp thu nhanh hơn nhiều.","<b>Khen ngợi cụ thể &amp; thường xuyên</b> — con ‘đói’ sự công nhận, lời khen là động lực lớn.","Chia việc thành <b>phần nhỏ vui vẻ</b>, có phần thưởng để con không bỏ dở.","Cho con <b>sân khấu thể hiện</b> (kể chuyện, biểu diễn, khoe sản phẩm).","Rèn tập trung nhẹ nhàng bằng ‘đồng hồ vui’ và nhắc bằng giọng tích cực."],
+    say:["“Mình biến việc này thành trò chơi nhé!”","“Con kể cho mẹ nghe đi.”","“Phần này con làm giỏi thật đấy!”"],
+    act:"Nghệ thuật, kể chuyện, ca hát – đóng vai, hoạt động nhóm đông bạn, làm MC nhí."},
+  S:{emo:"🐨",name:"Gấu Koala",tag:"Trái tim ấm áp — hiền hòa & tình cảm",color:"#10b981",
+    traits:"Con dịu dàng, tình cảm, thích sự ổn định và hòa thuận. Con rất nhạy cảm, biết quan tâm người khác và trung thành với những gì quen thuộc.",
+    strength:["Tốt bụng, biết lắng nghe","Kiên nhẫn, hợp tác, dễ thương","Trung thành, đáng tin cậy","Hòa nhã, ít gây xung đột"],
+    watch:["Ngại thay đổi, sợ cái mới","Dễ tủi thân, nhạy cảm với lời nặng","Hay nhường nên dễ chịu thiệt","Khó nói ‘không’, cần cảm giác an toàn"],
+    tips:["<b>Báo trước mọi thay đổi</b> (chuyển trường, đi xa…) để con chuẩn bị tâm lý — con ghét bất ngờ.","Trấn an bằng <b>ôm ấp &amp; lời nói dịu dàng</b>; tránh quát to (con rất nhạy, dễ tổn thương).","Dạy con <b>nói lên ý kiến &amp; biết từ chối</b> để không bị thiệt hay bị bắt nạt.","Giữ <b>nếp sinh hoạt ổn định</b>, quen thuộc — con thấy an toàn sẽ tự tin hơn.","Khích lệ con thử cái mới <b>từ từ</b>, đi cùng con bước đầu, đừng ép nhanh."],
+    say:["“Mẹ luôn ở bên con.”","“Con đang cảm thấy thế nào?”","“Từ từ thôi, không sao đâu con.”"],
+    act:"Chăm thú cưng/cây cối, hoạt động nhóm nhỏ thân thiết, vẽ – thủ công nhẹ nhàng."},
+  C:{emo:"🦉",name:"Cú Mèo",tag:"Nhà thông thái nhí — cẩn thận & ham học",color:"#6366f1",
+    traits:"Con cẩn thận, thích quan sát và tìm hiểu ‘vì sao’. Con coi trọng sự đúng đắn, quy tắc, và thường suy nghĩ sâu trước khi làm.",
+    strength:["Tỉ mỉ, làm việc chính xác","Tư duy logic, thích tìm hiểu","Tập trung sâu, có trách nhiệm","Suy nghĩ chín chắn, cẩn trọng"],
+    watch:["Cầu toàn, sợ làm sai","Hay lo lắng, suy nghĩ nhiều","Chậm quyết định","Khó thích nghi với thay đổi đột ngột"],
+    tips:["<b>Giải thích ‘vì sao’ cặn kẽ</b> — con cần hiểu rõ mới yên tâm làm theo.","Cho con <b>thời gian chuẩn bị</b>, đừng hối thúc; báo trước lịch trình rõ ràng.","Dạy con ‘<b>sai một chút cũng không sao</b>’ — giảm áp lực phải hoàn hảo, sợ thất bại.","Khen <b>sự cố gắng &amp; tiến bộ</b>, không chỉ khen kết quả đúng.","Nuôi trí tò mò bằng <b>sách, bộ lắp ráp, câu đố, thí nghiệm nhỏ</b>."],
+    say:["“Để mẹ giải thích vì sao nhé.”","“Sai một chút cũng không sao, mình học từ đó mà.”","“Con cứ từ từ suy nghĩ, không vội đâu.”"],
+    act:"Lắp ráp – xếp hình, khoa học – thí nghiệm, đọc sách, giải đố trí tuệ."}
+};
+
+/* ===== Câu hỏi cho BÉ (giọng nói với bé) ===== */
+const ITEMS_CHILD=[
+  {q:"Khi chơi với các bạn mới, con thường…",o:[
+    {d:"D",e:"🦁",t:"Con chỉ huy, phân vai cho cả nhóm"},
+    {d:"I",e:"🐵",t:"Con làm quen với thật nhiều bạn"},
+    {d:"S",e:"🐨",t:"Con chơi nhẹ nhàng, nhường bạn"},
+    {d:"C",e:"🦉",t:"Con nhìn một lúc rồi mới vào chơi"}]},
+  {q:"Khi có một trò chơi mới, con…",o:[
+    {d:"D",e:"🦁",t:"Muốn chơi ngay, càng khó càng thích"},
+    {d:"I",e:"🐵",t:"Rủ bạn chơi cùng cho vui"},
+    {d:"S",e:"🐨",t:"Chơi từ từ, thích có người chỉ con"},
+    {d:"C",e:"🦉",t:"Hỏi kỹ luật chơi để chơi cho đúng"}]},
+  {q:"Khi con bị thua hoặc không được như ý…",o:[
+    {d:"D",e:"🦁",t:"Con tức, muốn chơi lại cho thắng"},
+    {d:"I",e:"🐵",t:"Con buồn xíu rồi quên ngay"},
+    {d:"S",e:"🐨",t:"Con buồn thiu, hơi tủi thân"},
+    {d:"C",e:"🦉",t:"Con nghĩ xem mình sai chỗ nào"}]},
+  {q:"Con thương ba mẹ bằng cách…",o:[
+    {d:"D",e:"🦁",t:"Làm giúp, bảo vệ ba mẹ"},
+    {d:"I",e:"🐵",t:"Ôm thật chặt, nói thương ba mẹ suốt"},
+    {d:"S",e:"🐨",t:"Quấn quýt, thích được ôm"},
+    {d:"C",e:"🦉",t:"Lặng lẽ làm điều tốt cho ba mẹ"}]},
+  {q:"Góc đồ chơi của con…",o:[
+    {d:"D",e:"🦁",t:"Hơi bừa nhưng con biết đồ ở đâu"},
+    {d:"I",e:"🐵",t:"Bừa vì con chơi nhiều thứ một lúc"},
+    {d:"S",e:"🐨",t:"Gọn theo thói quen của con"},
+    {d:"C",e:"🦉",t:"Con xếp ngăn nắp, gọn gàng"}]},
+  {q:"Khi học điều mới, con thích…",o:[
+    {d:"D",e:"🦁",t:"Tự làm một mình"},
+    {d:"I",e:"🐵",t:"Vừa học vừa chơi cho vui"},
+    {d:"S",e:"🐨",t:"Làm điều quen, từ từ thôi"},
+    {d:"C",e:"🦉",t:"Hiểu rõ ‘vì sao’ rồi mới làm"}]},
+  {q:"Ở chỗ đông người lạ, con…",o:[
+    {d:"D",e:"🦁",t:"Tự tin, không ngại gì"},
+    {d:"I",e:"🐵",t:"Vui lắm, làm quen liền"},
+    {d:"S",e:"🐨",t:"Nắm tay ba mẹ, hơi ngại"},
+    {d:"C",e:"🦉",t:"Nhìn quanh cho chắc rồi mới chơi"}]},
+  {q:"Khi ba mẹ nói ‘không được’, con…",o:[
+    {d:"D",e:"🦁",t:"Hỏi tại sao, đòi cho bằng được"},
+    {d:"I",e:"🐵",t:"Năn nỉ, làm nũng thật dễ thương"},
+    {d:"S",e:"🐨",t:"Nghe lời nhưng hơi buồn"},
+    {d:"C",e:"🦉",t:"Hỏi lý do, thấy đúng thì con chịu"}]},
+  {q:"Trò con thích nhất là…",o:[
+    {d:"D",e:"🦁",t:"Thi đấu, chạy nhảy, thắng thua"},
+    {d:"I",e:"🐵",t:"Đóng vai, kể chuyện, hát múa"},
+    {d:"S",e:"🐨",t:"Chơi nhẹ, chăm thú cưng / búp bê"},
+    {d:"C",e:"🦉",t:"Xếp hình, lắp ráp, giải đố"}]},
+  {q:"Gặp việc khó, con sẽ…",o:[
+    {d:"D",e:"🦁",t:"Thử cho bằng được"},
+    {d:"I",e:"🐵",t:"Rủ bạn làm cùng cho vui"},
+    {d:"S",e:"🐨",t:"Nhờ ba mẹ làm cùng"},
+    {d:"C",e:"🦉",t:"Làm từ từ từng bước cẩn thận"}]},
+  {q:"Con thấy mình là người…",o:[
+    {d:"D",e:"🦁",t:"Nhanh, mạnh mẽ, nhiều năng lượng"},
+    {d:"I",e:"🐵",t:"Nhanh, vui, nói nhiều"},
+    {d:"S",e:"🐨",t:"Nhẹ nhàng, từ tốn"},
+    {d:"C",e:"🦉",t:"Cẩn thận, kỹ lưỡng"}]},
+  {q:"Con vui nhất khi…",o:[
+    {d:"D",e:"🦁",t:"Được khen giỏi, được thắng"},
+    {d:"I",e:"🐵",t:"Được chơi với bạn, được khen dễ thương"},
+    {d:"S",e:"🐨",t:"Được ôm, mọi người vui vẻ với nhau"},
+    {d:"C",e:"🦉",t:"Được làm đúng, được tìm hiểu điều mới"}]}
+];
+
+/* ===== Câu hỏi cho BA MẸ (quan sát con) ===== */
+const ITEMS_PARENT=[
+  {q:"Khi chơi với một nhóm bạn mới, con thường…",o:[
+    {d:"D",e:"🦁",t:"Đứng ra phân vai, chỉ huy cả nhóm"},
+    {d:"I",e:"🐵",t:"Bắt chuyện rôm rả, làm quen với mọi người"},
+    {d:"S",e:"🐨",t:"Chơi nhẹ nhàng, nhường bạn, giữ hòa thuận"},
+    {d:"C",e:"🦉",t:"Quan sát một lúc rồi mới tham gia"}]},
+  {q:"Khi được giao một trò chơi hoặc bài tập mới…",o:[
+    {d:"D",e:"🦁",t:"Muốn làm ngay, thích cái khó để chinh phục"},
+    {d:"I",e:"🐵",t:"Hỏi ‘có vui không?’, rủ bạn cùng làm"},
+    {d:"S",e:"🐨",t:"Làm từ từ, thích có người hướng dẫn bên cạnh"},
+    {d:"C",e:"🦉",t:"Hỏi kỹ luật chơi, muốn làm cho thật đúng"}]},
+  {q:"Khi không được như ý (thua cuộc, bị từ chối)…",o:[
+    {d:"D",e:"🦁",t:"Bực, phản ứng mạnh, đòi làm lại cho thắng"},
+    {d:"I",e:"🐵",t:"Xịu một lúc rồi quên ngay, chuyển sang chuyện khác"},
+    {d:"S",e:"🐨",t:"Buồn lặng lẽ, dễ tủi thân"},
+    {d:"C",e:"🦉",t:"Suy nghĩ tại sao, phân tích chỗ chưa được"}]},
+  {q:"Con thể hiện tình cảm chủ yếu bằng cách…",o:[
+    {d:"D",e:"🦁",t:"Hành động: bảo vệ, làm giúp người mình thương"},
+    {d:"I",e:"🐵",t:"Ôm, nói nhiều, biểu cảm rõ ràng và sôi nổi"},
+    {d:"S",e:"🐨",t:"Quấn quýt, dịu dàng, thích được ôm ấp"},
+    {d:"C",e:"🦉",t:"Kín đáo, thể hiện qua việc làm chu đáo"}]},
+  {q:"Đồ chơi / góc của con thường…",o:[
+    {d:"D",e:"🦁",t:"Hơi bừa nhưng con biết mình cần gì, ghét bị sắp lại"},
+    {d:"I",e:"🐵",t:"Bừa vì con chơi nhiều thứ cùng một lúc"},
+    {d:"S",e:"🐨",t:"Gọn theo thói quen, ngại đổi chỗ đồ"},
+    {d:"C",e:"🦉",t:"Ngăn nắp, sắp xếp theo trật tự riêng"}]},
+  {q:"Khi học một điều mới, con thích…",o:[
+    {d:"D",e:"🦁",t:"Tự làm, ghét bị cầm tay chỉ từng li từng tí"},
+    {d:"I",e:"🐵",t:"Học qua trò chơi, dễ chán nếu khô khan"},
+    {d:"S",e:"🐨",t:"Lặp lại điều quen thuộc, cần thời gian làm quen"},
+    {d:"C",e:"🦉",t:"Hiểu cặn kẽ ‘vì sao lại như vậy’"}]},
+  {q:"Ở chỗ đông người lạ, con thường…",o:[
+    {d:"D",e:"🦁",t:"Tự tin, xông xáo, không ngại"},
+    {d:"I",e:"🐵",t:"Hào hứng, làm quen rất nhanh"},
+    {d:"S",e:"🐨",t:"Bám ba mẹ, e dè lúc đầu"},
+    {d:"C",e:"🦉",t:"Quan sát kỹ, thận trọng trước khi nhập cuộc"}]},
+  {q:"Khi ba mẹ nói ‘không’, con thường…",o:[
+    {d:"D",e:"🦁",t:"Tranh luận, hỏi tại sao, đòi cho bằng được"},
+    {d:"I",e:"🐵",t:"Năn nỉ, làm nũng, dùng sự dễ thương"},
+    {d:"S",e:"🐨",t:"Nghe lời nhưng buồn, ít cãi lại"},
+    {d:"C",e:"🦉",t:"Hỏi lý do, thấy hợp lý thì mới chịu"}]},
+  {q:"Trò chơi con thích nhất là…",o:[
+    {d:"D",e:"🦁",t:"Thi đấu, thắng – thua, vận động mạnh"},
+    {d:"I",e:"🐵",t:"Đóng vai, kể chuyện, hát múa, đông bạn"},
+    {d:"S",e:"🐨",t:"Chơi nhẹ nhàng, chăm búp bê / thú cưng"},
+    {d:"C",e:"🦉",t:"Xếp hình, lắp ráp, giải câu đố"}]},
+  {q:"Khi gặp một việc khó, con sẽ…",o:[
+    {d:"D",e:"🦁",t:"Lao vào thử cho bằng được"},
+    {d:"I",e:"🐵",t:"Rủ người khác cùng làm cho vui"},
+    {d:"S",e:"🐨",t:"Nhờ ba mẹ giúp, làm cùng nhau"},
+    {d:"C",e:"🦉",t:"Nghiên cứu, làm từng bước cẩn thận"}]},
+  {q:"Nhịp điệu &amp; năng lượng của con…",o:[
+    {d:"D",e:"🦁",t:"Nhanh, dứt khoát, tràn đầy năng lượng"},
+    {d:"I",e:"🐵",t:"Nhanh, ồn ào, nhiều cảm xúc"},
+    {d:"S",e:"🐨",t:"Chậm rãi, điềm đạm, nhẹ nhàng"},
+    {d:"C",e:"🦉",t:"Vừa phải, cẩn thận, kỹ lưỡng"}]},
+  {q:"Điều khiến con vui nhất là…",o:[
+    {d:"D",e:"🦁",t:"Được khen giỏi, được thắng, được tự quyết"},
+    {d:"I",e:"🐵",t:"Được chú ý, được chơi cùng bạn, được khen dễ thương"},
+    {d:"S",e:"🐨",t:"Được ôm ấp, an toàn, mọi người hòa thuận"},
+    {d:"C",e:"🦉",t:"Được làm đúng, được tự do tìm hiểu, được khen thông minh"}]}
+];
+
+const RESULTS={child:null, parent:null};
+const LS={child:'ktkid_child', parent:'ktkid_parent'};
+function hydrate(){
+  ['child','parent'].forEach(m=>{ try{ const v=localStorage.getItem(LS[m]); if(v) RESULTS[m]=JSON.parse(v); }catch(e){} });
+}
+function saveResult(mode,obj){ RESULTS[mode]=obj; try{ localStorage.setItem(LS[mode], JSON.stringify(obj)); }catch(e){} }
+
+function refreshHome(){
+  document.getElementById('doneChild').textContent = RESULTS.child? ('✓ Đã làm — '+ANIMALS[RESULTS.child.primary].emo+' '+ANIMALS[RESULTS.child.primary].name) : '';
+  document.getElementById('doneParent').textContent = RESULTS.parent? ('✓ Đã làm — '+ANIMALS[RESULTS.parent.primary].emo+' '+ANIMALS[RESULTS.parent.primary].name) : '';
+  const cta=document.getElementById('compareCta'), btn=document.getElementById('compareBtn'), msg=document.getElementById('compareMsg');
+  if(RESULTS.child || RESULTS.parent){
+    cta.style.display='block';
+    if(RESULTS.child && RESULTS.parent){ btn.disabled=false; msg.textContent='Cả hai phần đã xong! Cùng xem ba mẹ có hiểu đúng về con không nhé.'; }
+    else { btn.disabled=true; msg.textContent='Đã xong 1 phần. Hãy hoàn thành phần còn lại để so sánh.'; }
+  } else cta.style.display='none';
+}
+
+let PARTICIPANT={childName:'',parentName:'',phone:''};
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function gv(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
+function saveInfo(){ try{ localStorage.setItem('ktkid_info', JSON.stringify(PARTICIPANT)); }catch(e){} }
+function hydrateInfo(){ try{ const v=localStorage.getItem('ktkid_info'); if(v){ PARTICIPANT=JSON.parse(v);
+  const a=document.getElementById('childName'); if(a)a.value=PARTICIPANT.childName||'';
+  const b=document.getElementById('parentName'); if(b)b.value=PARTICIPANT.parentName||'';
+  const c=document.getElementById('phone'); if(c)c.value=PARTICIPANT.phone||''; } }catch(e){} }
+function pInfo(){ const p=PARTICIPANT; const t=[];
+  if(p.childName)t.push('👶 Bé: <b>'+esc(p.childName)+'</b>');
+  if(p.parentName)t.push('👨‍👩‍👧 Ba mẹ: <b>'+esc(p.parentName)+'</b>');
+  if(p.phone)t.push('📞 '+esc(p.phone));
+  return t.length?'<div class="pinfo">'+t.join(' &nbsp;·&nbsp; ')+'</div>':''; }
+
+let CUR=null;
+function start(mode){
+  const childName=gv('childName'), parentName=gv('parentName'), phone=gv('phone');
+  ['fldChild','fldParent','fldPhone'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('err');});
+  let bad=false;
+  if(!childName){ document.getElementById('fldChild').classList.add('err'); bad=true; }
+  if(mode==='parent'){
+    if(!parentName){ document.getElementById('fldParent').classList.add('err'); bad=true; }
+    if(!phone){ document.getElementById('fldPhone').classList.add('err'); bad=true; }
+  }
+  if(bad){
+    const h=document.getElementById('collectHint'); h.style.color='#be123c';
+    h.textContent = mode==='parent' ? '⚠ Phần ba mẹ cần đủ: Tên con, Tên ba mẹ và Số điện thoại.' : '⚠ Vui lòng nhập Tên con trước khi bé làm.';
+    document.querySelector('.collect').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  PARTICIPANT={childName,parentName,phone}; saveInfo();
+  const items = mode==='child'? ITEMS_CHILD : ITEMS_PARENT;
+  CUR={mode, items, answers:new Array(items.length).fill(null)};
+  document.getElementById('home').style.display='none';
+  const who = mode==='child'? '<span class="who who-child">👶 Phần của Bé</span>' : '<span class="who who-parent">👨‍👩‍👧 Phần của Ba mẹ</span>';
+  const title = mode==='child'? '🐾 Con giống bạn nào nhất?' : '🐾 Con của bạn giống ai nhất?';
+  let html='<div class="card"><div class="qhead"><h2>'+title+'</h2>'+who+'</div>';
+  html+='<div class="prog-wrap"><div class="prog-bar" id="pb"></div></div><div class="prog-txt" id="pt">0 / '+items.length+'</div>';
+  items.forEach((it,i)=>{
+    html+='<div class="q"><div class="qt"><span class="n">'+(i+1)+'</span><span>'+it.q+'</span></div><div class="opts">';
+    it.o.forEach((o,j)=>{ html+='<div class="opt" data-d="'+o.d.toLowerCase()+'" onclick="pick('+i+','+j+',this)"><span class="e">'+o.e+'</span><span>'+o.t+'</span></div>'; });
+    html+='</div></div>';
+  });
+  html+='<div class="runner-foot"><span class="warn" id="warn">⚠ Vui lòng trả lời tất cả các câu.</span><button class="btn btn-ghost" onclick="goHome()">← Trang chủ</button><button class="btn btn-primary" onclick="finish()">Xem kết quả →</button></div></div>';
+  document.getElementById('runner').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function pick(i,j,el){
+  CUR.answers[i]=CUR.items[i].o[j].d;
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel','d','i','s','c'));
+  el.classList.add('sel', el.dataset.d);
+  const done=CUR.answers.filter(a=>a!==null).length;
+  document.getElementById('pb').style.width=(done/CUR.answers.length*100)+'%';
+  document.getElementById('pt').textContent=done+' / '+CUR.answers.length;
+  document.getElementById('warn').style.display='none';
+}
+function tally(answers){
+  const cnt={D:0,I:0,S:0,C:0}; answers.forEach(a=>cnt[a]++);
+  const tot=answers.length; const pct={}; Object.keys(cnt).forEach(k=>pct[k]=Math.round(cnt[k]/tot*100));
+  const ranked=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
+  return {cnt,pct,ranked,primary:ranked[0]};
+}
+function finish(){
+  const un=CUR.answers.findIndex(a=>a===null);
+  if(un>=0){ document.getElementById('warn').style.display='inline'; document.querySelectorAll('.q')[un].scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  const r=tally(CUR.answers); saveResult(CUR.mode, r);
+  if(CUR.mode==='parent'){
+    const A=ANIMALS[r.primary];
+    sendKid('Trẻ em · Ba mẹ đánh giá', A.emo+' '+A.name,
+      'Con: '+(PARTICIPANT.childName||'')+' | '+['D','I','S','C'].map(k=>k+':'+r.pct[k]+'%').join(' '));
+  }
+  renderResult(CUR.mode, r);
+}
+function renderResult(mode, r){
+  const A=ANIMALS[r.primary];
+  const isChild = mode==='child';
+  const cn = PARTICIPANT.childName? esc(PARTICIPANT.childName) : (isChild?'Con':'con');
+  let html='<div class="card">'+pInfo();
+  html+='<div class="rhead"><div class="face">'+A.emo+'</div><div class="nm" style="color:'+A.color+'">'
+      + (isChild? (cn+' là '+A.name+'!') : ('Ba mẹ thấy '+cn+' là '+A.name))
+      + '</div><div class="tg">'+A.tag+'</div></div>';
+  r.ranked.forEach(k=>{const a=ANIMALS[k];
+    html+='<div class="bar-row"><div class="lbl">'+a.emo+' '+a.name+'</div><div class="bar-track"><div class="bar-fill" style="width:'+r.pct[k]+'%;background:'+a.color+'"></div></div><div class="pct">'+r.pct[k]+'%</div></div>';
+  });
+  if(r.cnt[r.ranked[1]]>0 && r.cnt[r.ranked[1]]>=r.cnt[r.primary]-2)
+    html+='<div class="blend">✨ Pha trộn <b>'+A.name+' + '+ANIMALS[r.ranked[1]].name+'</b> — rất thường gặp!</div>';
+
+  html+='<div class="rb"><h4>🌟 '+(isChild?'Con là người':'Tính cách của con')+'</h4><p>'+A.traits+'</p></div>';
+  html+='<div class="rb"><h4>💪 '+(isChild?'Siêu năng lực của con':'Điểm mạnh')+'</h4><ul>'+A.strength.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  if(!isChild){
+    html+='<div class="rb"><h4>⚠️ Điều cần lưu ý</h4><ul>'+A.watch.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    html+='<div class="rb" style="border-color:'+A.color+'55;background:'+A.color+'0d"><h4>👨‍👩‍👧 Bí quyết nuôi dạy '+A.name+'</h4><ul>'+A.tips.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    html+='<div class="rb"><h4>💬 Câu nói nên dùng với con</h4>'+A.say.map(x=>'<div class="say">'+x+'</div>').join('')+'</div>';
+  }
+  html+='<div class="rb"><h4>🎨 Hoạt động phù hợp</h4><p>'+A.act+'</p></div>';
+
+  // điều hướng tiếp theo
+  const other = mode==='child'?'parent':'child';
+  const otherLabel = other==='child'?'👶 Cho bé làm':'👨‍👩‍👧 Ba mẹ làm';
+  html+='<div class="runner-foot"><button class="btn btn-ghost" onclick="start(\''+mode+'\')">↺ Làm lại</button>';
+  if(RESULTS[other]) html+='<button class="btn btn-gold" onclick="showCompare()">📊 So sánh kết quả</button>';
+  else html+='<button class="btn btn-primary" onclick="start(\''+other+'\')">'+otherLabel+' →</button>';
+  html+='<button class="btn btn-ghost" onclick="goHome()">🏠 Trang chủ</button></div></div>';
+  document.getElementById('runner').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showCompare(){
+  const c=RESULTS.child, p=RESULTS.parent;
+  if(!c || !p){ goHome(); return; }
+  const AC=ANIMALS[c.primary], AP=ANIMALS[p.primary];
+  let html='<div class="card">'+pInfo()+'<div class="qhead"><h2>📊 Ba mẹ có hiểu đúng về '+(PARTICIPANT.childName?esc(PARTICIPANT.childName):'con')+'?</h2></div>';
+  html+='<div class="cmp-top"><div class="cmp-card kid"><div class="who">👶 BÉ TỰ THẤY</div><div class="face">'+AC.emo+'</div><div class="nm" style="color:'+AC.color+'">'+AC.name+'</div></div>'
+      + '<div class="cmp-card par"><div class="who">👨‍👩‍👧 BA MẸ THẤY</div><div class="face">'+AP.emo+'</div><div class="nm" style="color:'+AP.color+'">'+AP.name+'</div></div></div>';
+
+  // mức độ khớp
+  const same = c.primary===p.primary;
+  const overlap = c.ranked.slice(0,2).includes(p.primary) || p.ranked.slice(0,2).includes(c.primary);
+  if(!_cmpSent){
+    _cmpSent=true;
+    sendKid('Trẻ em · So sánh Bé–Ba mẹ',
+      'Bé: '+AC.name+' / Ba mẹ: '+AP.name+(same?' — Khớp ✓':(overlap?' — Gần đúng':' — Khác biệt')),
+      'Bé['+['D','I','S','C'].map(k=>k+':'+c.pct[k]).join(' ')+'] BaMe['+['D','I','S','C'].map(k=>k+':'+p.pct[k]).join(' ')+']');
+  }
+  if(same){
+    html+='<div class="verdict v-ok">🎉 <b>Ba mẹ hiểu rất đúng về con!</b> Cảm nhận của bé và ba mẹ trùng khớp ở nhóm <b>'+AC.name+'</b>. Ba mẹ đang nhìn con khá rõ — hãy tiếp tục đồng hành theo hướng này.</div>';
+  } else if(overlap){
+    html+='<div class="verdict v-mid">👍 <b>Ba mẹ khá hiểu con.</b> Bé nghiêng về <b>'+AC.name+'</b>, còn ba mẹ thấy rõ nét <b>'+AP.name+'</b> — hai nét này cùng nằm trong nhóm nổi trội của con. Hãy trò chuyện thêm để hiểu con trọn vẹn hơn.</div>';
+  } else {
+    html+='<div class="verdict v-diff">💡 <b>Có sự khác biệt thú vị!</b> Bé tự thấy mình là <b>'+AC.name+'</b>, nhưng ba mẹ lại thấy con là <b>'+AP.name+'</b>. Đây không phải điều xấu — mà là cơ hội quý để <b>lắng nghe con nhiều hơn</b>. Có thể con đang có những cảm nhận bên trong mà ba mẹ chưa thấy hết.</div>';
+  }
+
+  // bảng so sánh từng con vật
+  html+='<div class="rb"><h4>So sánh chi tiết (Bé vs Ba mẹ)</h4>';
+  ['D','I','S','C'].forEach(k=>{const a=ANIMALS[k];
+    html+='<div class="cmp-row"><div class="cl">'+a.emo+' '+a.name+'</div><div class="cmp-bars">'
+      + '<div class="cb"><span>👶 Bé</span><div class="track"><div class="fill" style="width:'+c.pct[k]+'%;background:'+a.color+'"></div></div><b>'+c.pct[k]+'%</b></div>'
+      + '<div class="cb"><span>👪 Ba mẹ</span><div class="track"><div class="fill" style="width:'+p.pct[k]+'%;background:'+a.color+';opacity:.5"></div></div><b>'+p.pct[k]+'%</b></div>'
+      + '</div></div>';
+  });
+  html+='</div>';
+
+  // điểm lệch lớn nhất
+  let gapK=null, gapV=-1;
+  ['D','I','S','C'].forEach(k=>{const g=Math.abs(c.pct[k]-p.pct[k]); if(g>gapV){gapV=g;gapK=k;}});
+  if(gapV>=20){
+    const higher = c.pct[gapK]>p.pct[gapK] ? 'bé tự cảm nhận' : 'ba mẹ quan sát';
+    html+='<div class="blend">🔎 Khác biệt rõ nhất ở nét <b>'+ANIMALS[gapK].emo+' '+ANIMALS[gapK].name+'</b> — nét này được <b>'+higher+'</b> đánh giá cao hơn. Hãy hỏi con về điều này để hiểu thêm góc nhìn của con nhé.</div>';
+  }
+
+  // gợi ý nuôi dạy theo nét bé tự thấy
+  html+='<div class="rb" style="border-color:'+AC.color+'55;background:'+AC.color+'0d"><h4>👨‍👩‍👧 Bí quyết nuôi dạy (theo điều bé tự cảm nhận: '+AC.name+')</h4><ul>'+AC.tips.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  html+='<div class="rb"><h4>💬 Câu nói gợi mở để trò chuyện cùng con</h4><div class="say">“Con thấy mình giống bạn '+AC.emo+' '+AC.name+' nhất đúng không? Kể cho ba mẹ nghe vì sao nha.”</div><div class="say">“Có điều gì con thích mà ba mẹ chưa biết không?”</div></div>';
+
+  html+='<div class="note">Hai góc nhìn đều quý: bé hiểu cảm xúc bên trong mình, ba mẹ thấy hành vi bên ngoài. Ghép lại sẽ cho bức tranh đầy đủ nhất về con. 💛</div>';
+  html+='<div class="sent-note">✅ Đã gửi kết quả về KT Academy — KT Academy sẽ liên hệ ba mẹ để tư vấn đồng hành cùng con.</div>';
+  html+='<div class="runner-foot"><button class="btn btn-ghost" onclick="goHome()">🏠 Trang chủ</button><button class="btn btn-primary" onclick="window.print()">🖨️ Lưu / In kết quả</button></div></div>';
+  document.getElementById('runner').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goHome(){ document.getElementById('runner').innerHTML=''; document.getElementById('home').style.display='block'; refreshHome(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+hydrateInfo(); hydrate(); refreshHome();
+try{ if(sessionStorage.getItem('kt_ok')==='1') document.getElementById('gate').classList.add('hidden'); }catch(e){}
+</script>
+</body>
+</html>
