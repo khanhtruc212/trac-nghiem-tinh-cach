@@ -96,11 +96,32 @@
   .sent-note{border-radius:10px;padding:11px 15px;font-size:13.5px;margin:14px 0;}
   .sent-ok{background:var(--teal-soft);border:1px solid #bfe3dc;color:var(--teal-deep);}
   .sent-info{background:#eef2f1;border:1px solid var(--line);color:var(--ink-soft);}
+  .gate{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:radial-gradient(900px 400px at 12% -10%,#1f6f67,transparent 60%),linear-gradient(135deg,#0d3b36,#0f766e 58%,#155e54);}
+  .gate.hidden{display:none;}
+  .gate-box{background:#fff;border-radius:18px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);padding:34px 30px;max-width:400px;width:100%;text-align:center;}
+  .gate-box h2{margin:14px 0 4px;font-size:22px;color:var(--teal-deep);}
+  .gate-box p{margin:0 0 18px;font-size:14px;color:var(--ink-soft);}
+  .gate-box input{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-family:var(--font);text-align:center;letter-spacing:.06em;}
+  .gate-box input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  .gate-box .btn{width:100%;justify-content:center;margin-top:12px;}
+  .gate-err{color:var(--rose);font-size:13.5px;font-weight:600;margin-top:10px;min-height:18px;}
   footer{color:var(--muted);font-size:12.5px;margin-top:34px;text-align:center;}
   @media(max-width:720px){.cards{grid-template-columns:1fr;}.hero h1{font-size:27px;}.bar-row{grid-template-columns:108px 1fr 44px;}.panel{padding:20px 18px;}}
 </style>
 </head>
 <body>
+<div id="gate" class="gate">
+  <div class="gate-box">
+    <svg viewBox="0 0 64 64" width="58" height="58" role="img" aria-label="KT Academy"><defs><linearGradient id="ktg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#ktg2)"/><path d="M45 9l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1z" fill="#fcd34d"/><text x="30" y="45" font-family="Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="1">KT</text></svg>
+    <h2>KT Academy</h2>
+    <p>Bài test dành riêng cho học viên được mời. Vui lòng nhập <b>mã truy cập</b> mà KT Academy đã gửi cho bạn.</p>
+    <input id="gateCode" type="text" placeholder="Nhập mã truy cập…" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccess()">
+    <button class="btn btn-primary" onclick="checkAccess()">Vào làm bài →</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
 <div class="hero"><div class="inner">
   <div class="brand">
     <svg class="kt-logo" viewBox="0 0 64 64" width="54" height="54" role="img" aria-label="KT Academy"><defs><linearGradient id="ktg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#ktg)"/><rect x="3" y="3" width="58" height="58" rx="16" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.5"/><path d="M45 9l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1z" fill="#fcd34d"/><text x="30" y="45" font-family="Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="1">KT</text></svg>
@@ -413,6 +434,20 @@ function footBtns(){
        +'<button class="btn btn-ghost" onclick="showHome()">← Chọn bài khác</button>'
        +'<button class="btn btn-primary" onclick="window.print()">🖨️ Lưu / In kết quả</button></div>';
 }
+
+/* ===== KHOÁ TRUY CẬP (mã chung) ===== */
+const ACCESS_HASH = 1505047887; // mã hiện tại: KTA2026  (đổi mã -> báo để cập nhật hash)
+function ktHash(s){ let x=5381; for(let i=0;i<s.length;i++) x=(x*33+s.charCodeAt(i))>>>0; return x; }
+function checkAccess(){
+  const v=(document.getElementById('gateCode').value||'').trim().toUpperCase();
+  if(ktHash(v)===ACCESS_HASH){
+    try{ sessionStorage.setItem('kt_ok','1'); }catch(e){}
+    document.getElementById('gate').classList.add('hidden');
+  } else {
+    document.getElementById('gateErr').textContent='Mã không đúng. Vui lòng liên hệ KT Academy để nhận mã.';
+  }
+}
+try{ if(sessionStorage.getItem('kt_ok')==='1') document.getElementById('gate').classList.add('hidden'); }catch(e){}
 </script>
 </body>
 </html>
