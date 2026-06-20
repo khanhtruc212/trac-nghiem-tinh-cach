@@ -77,6 +77,19 @@
   .res-block{background:#fcfdfd;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0;}
   .res-block h4{margin:0 0 8px;color:var(--teal-deep);font-size:16px;}
   .res-block p{margin:6px 0;font-size:14.5px;}.res-block ul{margin:6px 0;padding-left:20px;}.res-block li{margin:4px 0;}
+  .collect{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px 22px;margin-bottom:18px;}
+  .collect h3{margin:0 0 4px;font-size:17px;color:var(--teal-deep);}
+  .collect .cp{margin:0 0 12px;font-size:13.5px;color:var(--muted);}
+  .fields{display:flex;gap:12px;flex-wrap:wrap;}
+  .fld{flex:1;min-width:200px;}
+  .fld label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;}
+  .fld input{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;font-size:14.5px;font-family:var(--font);}
+  .fld input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.12);}
+  .fld.err input{border-color:var(--rose);background:#fff6f6;}
+  .collect .hint{font-size:12.5px;color:var(--muted);margin-top:9px;}
+  .sent-note{border-radius:10px;padding:11px 15px;font-size:13.5px;margin:14px 0;}
+  .sent-ok{background:var(--teal-soft);border:1px solid #bfe3dc;color:var(--teal-deep);}
+  .sent-info{background:#eef2f1;border:1px solid var(--line);color:var(--ink-soft);}
   footer{color:var(--muted);font-size:12.5px;margin-top:34px;text-align:center;}
   @media(max-width:720px){.cards{grid-template-columns:1fr;}.hero h1{font-size:27px;}.bar-row{grid-template-columns:108px 1fr 44px;}.panel{padding:20px 18px;}}
 </style>
@@ -91,6 +104,17 @@
 <div class="container">
   <div id="home">
     <div class="note"><b>💡 Mẹo làm bài.</b> Trả lời thật lòng theo con người <b>thường ngày</b> của bạn — không có đáp án đúng/sai. Đây là công cụ <b>tự khám phá</b>, phản ánh xu hướng chứ không phải “phán quyết” cố định.</div>
+
+    <div class="collect" id="collect">
+      <h3>📝 Thông tin của bạn</h3>
+      <p class="cp">Vui lòng nhập tên &amp; liên hệ trước khi làm — kết quả sẽ được gửi tới giảng viên để nhận tư vấn.</p>
+      <div class="fields">
+        <div class="fld" id="fldName"><label>Họ và tên *</label><input id="pName" placeholder="Nguyễn Văn A" autocomplete="name"></div>
+        <div class="fld" id="fldContact"><label>Số điện thoại hoặc Email *</label><input id="pContact" placeholder="09xx xxx xxx hoặc email@..." autocomplete="email"></div>
+      </div>
+      <div class="hint" id="collectHint">🔒 Thông tin chỉ dùng để giảng viên liên hệ &amp; tư vấn kết quả.</div>
+    </div>
+
     <div class="cards">
       <div class="tcard">
         <div class="ic i-disc">🧩</div>
@@ -122,6 +146,31 @@
 </div>
 
 <script>
+/* ===== THU THẬP KẾT QUẢ VỀ GOOGLE SHEET =====
+   Dán link Web App (Google Apps Script) của bạn vào giữa hai dấu nháy bên dưới.
+   Để trống = chế độ xem thử, kết quả KHÔNG được gửi đi. */
+const SCRIPT_URL = "";
+
+let PARTICIPANT = {name:"", contact:""};
+function sendResult(test, result, detail){
+  const payload={
+    time:new Date().toLocaleString('vi-VN'),
+    name:PARTICIPANT.name, contact:PARTICIPANT.contact,
+    test, result, detail
+  };
+  if(!SCRIPT_URL){ console.log('[Xem thử] Kết quả chưa gửi:', payload); return; }
+  try{
+    fetch(SCRIPT_URL,{method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)});
+  }catch(e){ console.warn('Gửi kết quả thất bại:', e); }
+}
+function sentNote(){
+  return SCRIPT_URL
+    ? '<div class="sent-note sent-ok">✅ Đã gửi kết quả về cho giảng viên — bạn sẽ được liên hệ tư vấn.</div>'
+    : '<div class="sent-note sent-info">ℹ️ Bản xem thử: kết quả hiển thị cho bạn nhưng chưa được gửi đi (giảng viên chưa bật thu thập).</div>';
+}
+
 const SCALES={
   likert5:{vals:[1,2,3,4,5], labels:["Hoàn toàn<br>không đúng","Không<br>đúng","Trung<br>lập","Đúng","Hoàn toàn<br>đúng"]},
   like5:{vals:[1,2,3,4,5], labels:["Rất<br>không thích","Không<br>thích","Bình<br>thường","Thích","Rất<br>thích"]}
@@ -247,6 +296,18 @@ const TESTS={
 let CUR=null;
 function showHome(){ document.getElementById('runner').innerHTML=''; document.getElementById('home').style.display=''; window.scrollTo({top:0,behavior:'smooth'}); }
 function startTest(key){
+  const name=(document.getElementById('pName').value||'').trim();
+  const contact=(document.getElementById('pContact').value||'').trim();
+  document.getElementById('fldName').classList.toggle('err', !name);
+  document.getElementById('fldContact').classList.toggle('err', !contact);
+  if(!name || !contact){
+    const h=document.getElementById('collectHint');
+    h.style.color='#be123c';
+    h.textContent='⚠ Vui lòng nhập đầy đủ Họ tên và Số điện thoại/Email trước khi làm bài.';
+    document.getElementById('collect').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  PARTICIPANT={name, contact};
   const def=TESTS[key];
   CUR={key, def, items:def.items, answers:new Array(def.items.length).fill(null)};
   document.getElementById('home').style.display='none';
@@ -293,6 +354,9 @@ function scoreRank(top3){
   items.forEach((it,i)=>{sums[it.d]+=answers[i];counts[it.d]++;});
   const pct={}; Object.keys(sums).forEach(k=>{ pct[k]=Math.round(((sums[k]-minV*counts[k])/((maxV-minV)*counts[k]))*100); });
   const ranked=Object.keys(pct).sort((a,b)=>pct[b]-pct[a]); const primary=ranked[0];
+  const _res = top3 ? ('Mã '+ranked.slice(0,3).join('')) : (primary+' · '+def.dims[primary].name);
+  const _det = ranked.map(k=>k+':'+pct[k]+'%').join(' | ');
+  sendResult(def.name, _res, _det);
   let html='<div class="panel"><div class="ph"><div><h2>Kết quả · '+def.name+'</h2></div><span class="tag">Hoàn thành</span></div>';
   if(top3){
     const code=ranked.slice(0,3).join('');
@@ -312,7 +376,7 @@ function scoreRank(top3){
     html+='<div class="res-block"><h4>🎯 Đặc trưng nhóm '+primary+'</h4><p style="font-style:italic;color:var(--teal-deep)">'+info.motto+'</p><p><b>Tính cách:</b> '+info.traits+'</p><p><b>Thế mạnh:</b> '+info.strength+'</p><p><b>Nghề phù hợp:</b> '+info.jobs+'</p></div>';
     if(pct[ranked[1]]>=pct[primary]-12) html+='<div class="note">Bạn có xu hướng <b>'+primary+ranked[1]+'</b> (pha trộn) — khá phổ biến. Hãy đọc thêm mô tả nhóm '+ranked[1]+'.</div>';
   }
-  html+=footBtns(); html+='</div>'; return html;
+  html+=sentNote(); html+=footBtns(); html+='</div>'; return html;
 }
 
 function scoreMBTI(){
@@ -322,6 +386,7 @@ function scoreMBTI(){
   let type='', pct={};
   def.pairs.forEach(([a,b])=>{ const tot=s[a]+s[b]||1; pct[a]=Math.round(s[a]/tot*100); pct[b]=100-pct[a]; type+= s[a]>=s[b]?a:b; });
   const info=def.types[type];
+  sendResult('MBTI', type+' · '+info.n, def.pairs.map(([a,b])=>a+pct[a]+'/'+b+pct[b]).join(' | '));
   const pn={E:"Hướng ngoại",I:"Hướng nội",S:"Giác quan",N:"Trực giác",T:"Lý trí",F:"Cảm xúc",J:"Nguyên tắc",P:"Linh hoạt"};
   let html='<div class="panel"><div class="ph"><div><h2>Kết quả · MBTI</h2></div><span class="tag">Hoàn thành</span></div>';
   html+='<div style="text-align:center;margin:10px 0"><span class="badge-type" style="color:#4338ca;background:#eef0fd">'+type+'</span><div class="res-name">'+info.n+'</div><div class="sub">'+info.d+'</div></div>';
@@ -330,7 +395,7 @@ function scoreMBTI(){
   });
   html+='<div class="res-block"><h4>💼 Hướng nghề gợi ý cho '+type+'</h4><p>'+info.j+'</p></div>';
   html+='<div class="note">MBTI phản ánh <b>xu hướng</b>, không phải giới hạn. Nếu một cặp gần 50–50, bạn linh hoạt ở chiều đó.</div>';
-  html+=footBtns(); html+='</div>'; return html;
+  html+=sentNote(); html+=footBtns(); html+='</div>'; return html;
 }
 
 function footBtns(){
