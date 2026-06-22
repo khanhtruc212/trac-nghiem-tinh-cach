@@ -122,7 +122,10 @@
 const UUID="bac5aa77-d4eb-4295-a317-b024e308cb2b";
 const API=`https://webhook.site/token/${UUID}/requests?sorting=newest&per_page=100`;
 const PROXIES=[
+  u=>`https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(u)}`,
   u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u=>`https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
+  u=>`https://thingproxy.freeboard.io/fetch/${u}`,
   u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
   u=>u
 ];
@@ -166,7 +169,9 @@ async function load(){
     try{
       const r=await fetch(p(API),{cache:'no-store'});
       if(!r.ok) continue;
-      const j=await r.json();
+      const txt=await r.text();
+      let j=JSON.parse(txt);
+      if(j && typeof j.contents==='string'){ j=JSON.parse(j.contents); } // allorigins /get bọc trong .contents
       if(j&&j.data){ data=j.data; break; }
     }catch(e){}
   }
