@@ -202,27 +202,37 @@
 </div>
 
 <script>
-/* ===== THU THẬP KẾT QUẢ VỀ GOOGLE SHEET =====
-   Dán link Web App (Google Apps Script) của bạn vào giữa hai dấu nháy bên dưới.
-   Để trống = chế độ xem thử, kết quả KHÔNG được gửi đi. */
-const SCRIPT_URL = "https://webhook.site/bac5aa77-d4eb-4295-a317-b024e308cb2b";
+/* ===== THU THẬP KẾT QUẢ VỀ GOOGLE FORM =====
+   Kết quả mỗi lượt làm được nộp thẳng vào Google Form (lưu vĩnh viễn trong Google Sheet).
+   Muốn đổi sang Form khác: thay FORM_ACTION + các entry ID bên dưới. */
+const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScOzDXn5gmr2VzFsgb37p1-14LZQiGwuOPrFGKXKTPyEXLhxQ/formResponse";
+const FORM_ENTRY = {
+  name:    "entry.359978354",   // Họ và tên
+  contact: "entry.1103763907",  // Số điện thoại liên hệ
+  test:    "entry.1829561625",  // Bài test
+  result:  "entry.2022617236",  // Kết quả
+  detail:  "entry.1126041938"   // Chi tiết
+};
+const COLLECT_ON = true; // true = đang thu kết quả; đặt false = chế độ xem thử (không gửi)
 
 let PARTICIPANT = {name:"", contact:""};
 function sendResult(test, result, detail){
-  const payload={
-    time:new Date().toLocaleString('vi-VN'),
-    name:PARTICIPANT.name, contact:PARTICIPANT.contact,
-    test, result, detail
-  };
-  if(!SCRIPT_URL){ console.log('[Xem thử] Kết quả chưa gửi:', payload); return; }
+  const payload={name:PARTICIPANT.name, contact:PARTICIPANT.contact, test, result, detail};
+  if(!COLLECT_ON){ console.log('[Xem thử] Kết quả chưa gửi:', payload); return; }
   try{
-    fetch(SCRIPT_URL,{method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(payload)});
+    const body=new URLSearchParams();
+    body.append(FORM_ENTRY.name,    PARTICIPANT.name);
+    body.append(FORM_ENTRY.contact, PARTICIPANT.contact);
+    body.append(FORM_ENTRY.test,    test);
+    body.append(FORM_ENTRY.result,  result);
+    body.append(FORM_ENTRY.detail,  detail);
+    fetch(FORM_ACTION,{method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:body.toString()});
   }catch(e){ console.warn('Gửi kết quả thất bại:', e); }
 }
 function sentNote(){
-  return SCRIPT_URL
+  return COLLECT_ON
     ? '<div class="sent-note sent-ok">✅ Đã gửi kết quả về cho giảng viên — bạn sẽ được liên hệ tư vấn.</div>'
     : '<div class="sent-note sent-info">ℹ️ Bản xem thử: kết quả hiển thị cho bạn nhưng chưa được gửi đi (giảng viên chưa bật thu thập).</div>';
 }
