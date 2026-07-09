@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KT Academy · Bảng kết quả</title>
+<link rel="icon" type="image/svg+xml" href="../../../_brand/logo-kt.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="../../../_brand/logo-kt-64.png">
 <style>
   :root{
     --paper:#fff;--ink:#1f2933;--ink-soft:#52606d;--muted:#7b8794;--line:#e4e7eb;
@@ -80,13 +82,36 @@
 </style>
 </head>
 <body>
+
+<!-- KT Academy logo (cỏ 4 lá) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="ktl-navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c3e80"/><stop offset="1" stop-color="#0a1830"/></linearGradient>
+  <linearGradient id="ktl-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6a3"/><stop offset="1" stop-color="#e0a52e"/></linearGradient>
+  <linearGradient id="ktl-teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7defdf"/><stop offset="1" stop-color="#1fc0af"/></linearGradient>
+  <radialGradient id="ktl-sheen" cx="0.42" cy="0.32" r="0.75"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="0.55" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <path id="ktl-leaf" d="M60 59 C 56 50 45 49 39 42 C 30 31 34 20 46 21 C 54 21.7 59 28 60 36 C 61 28 66 21.7 74 21 C 86 20 90 31 81 42 C 75 49 64 50 60 59 Z"/>
+  <symbol id="ktlogo" viewBox="0 0 120 120">
+    <rect x="6" y="6" width="108" height="108" rx="29" fill="url(#ktl-navy)"/>
+    <rect x="6" y="6" width="108" height="108" rx="29" fill="none" stroke="#f1c14a" stroke-opacity=".55" stroke-width="1.5"/>
+    <path d="M60 74 C 61.5 82 61 87 60 93" fill="none" stroke="#1bb9ac" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(60 60) scale(1.15) translate(-60 -60)">
+      <g fill="url(#ktl-teal)" stroke="#14a99d" stroke-width="1" stroke-opacity=".4" stroke-linejoin="round">
+        <use href="#ktl-leaf" transform="rotate(45 60 60)"/><use href="#ktl-leaf" transform="rotate(135 60 60)"/><use href="#ktl-leaf" transform="rotate(225 60 60)"/><use href="#ktl-leaf" transform="rotate(315 60 60)"/></g>
+      <g fill="url(#ktl-sheen)"><use href="#ktl-leaf" transform="rotate(45 60 60)"/><use href="#ktl-leaf" transform="rotate(135 60 60)"/><use href="#ktl-leaf" transform="rotate(225 60 60)"/><use href="#ktl-leaf" transform="rotate(315 60 60)"/></g>
+    </g>
+    <circle cx="60" cy="60" r="22" fill="#0a1830"/>
+    <circle cx="60" cy="60" r="22" fill="none" stroke="url(#ktl-gold)" stroke-width="1.6" stroke-opacity=".8"/>
+    <text x="60" y="61" text-anchor="middle" dominant-baseline="central" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="26" letter-spacing="-0.5" fill="url(#ktl-gold)">KT</text>
+  </symbol>
+</defs></svg>
+
 <div class="hero"><div class="inner">
   <div class="brand">
-    <svg class="kt-logo" viewBox="0 0 64 64" width="50" height="50" role="img" aria-label="KT Academy"><defs><linearGradient id="ktg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#ktg)"/><rect x="3" y="3" width="58" height="58" rx="16" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.5"/><path d="M45 9l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1z" fill="#fcd34d"/><text x="30" y="45" font-family="Segoe UI,Arial,sans-serif" font-size="29" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="1">KT</text></svg>
+    <svg class="kt-logo" viewBox="0 0 120 120" width="50" height="50" role="img" aria-label="KT Academy"><use href="#ktlogo"/></svg>
     <div>
       <h1>📊 Bảng kết quả · KT Academy</h1>
       <p>Bấm vào một dòng để xem kết quả đầy đủ.</p>
-      <div class="ktline">Kiến thức giúp bạn nhìn xa · Tư duy giúp bạn đi đúng</div>
+      <div class="ktline">Kiến thức dẫn lối · Tư duy đổi mới</div>
     </div>
   </div>
   <button class="btn btn-light" onclick="load()">🔄 Tải lại</button>
@@ -107,8 +132,8 @@
       <tbody id="rows"><tr><td colspan="6" class="empty">Đang tải dữ liệu…</td></tr></tbody>
     </table>
   </div>
-  <div class="note" style="margin-top:18px">⚠️ Hộp thư miễn phí chỉ giữ khoảng <b>100 lượt gần nhất / ~7 ngày</b>. Muốn lưu vĩnh viễn &amp; không giới hạn cho lớp, hãy chuyển sang Google Form (nhắn giảng viên hỗ trợ).</div>
-  <footer><b>KT Academy</b> — Kiến thức giúp bạn nhìn xa · Tư duy giúp bạn đi đúng</footer>
+  <div class="note" style="margin-top:18px">✅ Kết quả được lưu <b>vĩnh viễn &amp; không giới hạn</b> trong Google Form/Sheet. Bảng tự cập nhật mỗi phút; bấm <b>🔄 Tải lại</b> để cập nhật ngay.</div>
+  <footer><b>KT Academy</b> — Kiến thức dẫn lối · Tư duy đổi mới</footer>
 </div>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
@@ -119,16 +144,25 @@
 </div>
 
 <script>
-const UUID="bac5aa77-d4eb-4295-a317-b024e308cb2b";
-const API=`https://webhook.site/token/${UUID}/requests?sorting=newest&per_page=100`;
+const SHEET_ID="1XqSsUrhfFwFDU0R-iyBkQJU9KZdBfpxKfg0GAKFEt1o";
+const SHEET_CSV=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 const PROXIES=[
+  u=>u, // Google Sheet cho phép đọc trực tiếp (CORS) — không cần proxy
   u=>`https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(u)}`,
-  u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-  u=>`https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
-  u=>`https://thingproxy.freeboard.io/fetch/${u}`,
-  u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-  u=>u
+  u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`
 ];
+function parseCSV(text){
+  const rows=[]; let row=[], field='', inQ=false;
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(inQ){ if(c==='"'){ if(text[i+1]==='"'){ field+='"'; i++; } else inQ=false; } else field+=c; }
+    else { if(c==='"') inQ=true;
+      else if(c===',') { row.push(field); field=''; }
+      else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+      else if(c!=='\r') field+=c; }
+  }
+  if(field!==''||row.length){ row.push(field); rows.push(row); }
+  return rows;
+}
 
 /* ---- dữ liệu mô tả để dựng thẻ kết quả ---- */
 const DISC={
@@ -164,26 +198,33 @@ function esc(s){ return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>'
 
 async function load(){
   document.getElementById('msg').textContent='Đang tải…';
-  let data=null;
+  let text=null;
   for(const p of PROXIES){
     try{
-      const r=await fetch(p(API),{cache:'no-store'});
+      const r=await fetch(p(SHEET_CSV),{cache:'no-store'});
       if(!r.ok) continue;
-      const txt=await r.text();
-      let j=JSON.parse(txt);
-      if(j && typeof j.contents==='string'){ j=JSON.parse(j.contents); } // allorigins /get bọc trong .contents
-      if(j&&j.data){ data=j.data; break; }
+      let t=await r.text();
+      if(t.trim().charAt(0)==='{'){ try{ const j=JSON.parse(t); if(typeof j.contents==='string') t=j.contents; }catch(e){} } // proxy bọc trong .contents
+      if(t && t.indexOf(',')>=0){ text=t; break; }
     }catch(e){}
   }
-  if(!data){ document.getElementById('msg').textContent='⚠ Không tải được dữ liệu (thử bấm Tải lại).';
+  if(text===null){ document.getElementById('msg').textContent='⚠ Không tải được dữ liệu (thử bấm Tải lại).';
     document.getElementById('rows').innerHTML='<tr><td colspan="6" class="empty">Không tải được dữ liệu. Vui lòng bấm 🔄 Tải lại.</td></tr>'; return; }
+  const rows=parseCSV(text);
+  const head=(rows[0]||[]).map(h=>h.trim().toLowerCase());
+  const find=(...ks)=>{ for(const k of ks){ const i=head.findIndex(h=>h.includes(k)); if(i>=0) return i; } return -1; };
+  let iT=find('thời gian','thoi gian'), iN=find('họ và tên','họ tên','ho va ten','họ','tên'),
+      iC=find('liên hệ','điện thoại','sđt','sdt','contact','email'), iB=find('bài test','bai test','test'),
+      iR=find('kết quả','ket qua'), iD=find('chi tiết','chi tiet','detail');
+  if(iN<0){ iT=0; iN=1; iC=2; iB=3; iR=4; iD=5; } // dự phòng: theo đúng thứ tự cột Form
   RECORDS=[];
-  data.forEach(req=>{
-    try{
-      const o=JSON.parse(req.content);
-      if(o && (o.name||o.result)) RECORDS.push({name:o.name,contact:o.contact,test:o.test,result:o.result,detail:o.detail,time:o.time||req.created_at});
-    }catch(e){}
-  });
+  for(let i=1;i<rows.length;i++){
+    const c=rows[i]; if(!c) continue;
+    const name=(c[iN]||'').trim(), result=(c[iR]||'').trim();
+    if(!name && !result) continue;
+    RECORDS.push({time:(c[iT]||'').trim(), name, contact:(c[iC]||'').trim(), test:(c[iB]||'').trim(), result, detail:(c[iD]||'').trim()});
+  }
+  RECORDS.reverse(); // mới nhất lên đầu
   document.getElementById('msg').textContent='Cập nhật lúc '+new Date().toLocaleTimeString('vi-VN');
   renderStats(); render();
 }
